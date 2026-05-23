@@ -1,0 +1,328 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bastardo-black: #111111;
+  --bastardo-deep: #0a0908;
+  --bastardo-amber: #C8811A;
+  --bastardo-amber-light: #E8A93A;
+  --bastardo-cream: #F5EFE0;
+  --bastardo-brown: #1A1410;
+  --bastardo-rust: #8B3A1A;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bastardo-deep);
+  color: var(--bastardo-cream);
+  font-family: 'DM Sans', system-ui, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bastardo-deep);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--bastardo-amber);
+  border-radius: 2px;
+}
+
+/* ─── Selection ─── */
+::selection {
+  background: var(--bastardo-amber);
+  color: var(--bastardo-deep);
+}
+
+/* ─── Typography ─── */
+.font-display {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+h1, h2 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+/* ─── Grain overlay (film texture) ─── */
+.grain-overlay {
+  position: fixed;
+  top: -200%;
+  left: -200%;
+  width: 400%;
+  height: 400%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.055;
+  mix-blend-mode: overlay;
+  animation: grain 0.35s steps(1) infinite;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  10%       { transform: translate(-5%, -10%); }
+  20%       { transform: translate(-15%, 5%); }
+  30%       { transform: translate(7%, -25%); }
+  40%       { transform: translate(-5%, 25%); }
+  50%       { transform: translate(-15%, 10%); }
+  60%       { transform: translate(15%, 0%); }
+  70%       { transform: translate(0%, 15%); }
+  80%       { transform: translate(3%, 35%); }
+  90%       { transform: translate(-10%, 10%); }
+}
+
+/* ─── Loader ─── */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: var(--bastardo-deep);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: top;
+}
+
+/* ─── Spotlight cursor ─── */
+.spotlight {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  transition: opacity 0.3s;
+}
+
+/* ─── Retro Grid ─── */
+.retro-grid {
+  position: absolute;
+  inset: 0;
+  perspective: 600px;
+  overflow: hidden;
+}
+
+.retro-grid-inner {
+  position: absolute;
+  inset: 0;
+  top: 60%;
+  transform: rotateX(45deg);
+  background-image:
+    linear-gradient(rgba(200, 129, 26, 0.2) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200, 129, 26, 0.2) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: retro-scroll 4s linear infinite;
+  mask-image: linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%);
+}
+
+@keyframes retro-scroll {
+  0%   { background-position: 0 0; }
+  100% { background-position: 0 60px; }
+}
+
+/* ─── Aurora background blobs ─── */
+.aurora-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  animation: aurora-float var(--duration, 8s) ease-in-out infinite alternate;
+  opacity: 0.35;
+}
+
+@keyframes aurora-float {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(var(--tx, 20px), var(--ty, 20px)) scale(var(--scale, 1.1)); }
+}
+
+/* ─── Section reveal base ─── */
+.section-hidden {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.section-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── Amber glow button ─── */
+.btn-amber {
+  position: relative;
+  background: var(--bastardo-amber);
+  color: var(--bastardo-deep);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 16px 40px;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.btn-amber::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+  animation: shimmer 3s linear infinite;
+}
+
+.btn-amber:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(200, 129, 26, 0.4);
+}
+
+@keyframes shimmer {
+  0%   { left: -100%; }
+  100% { left: 200%; }
+}
+
+/* ─── WhatsApp button ─── */
+.btn-whatsapp {
+  background: #25D366;
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.btn-whatsapp:hover {
+  background: #1ebe59;
+  transform: translateY(-2px);
+}
+
+/* ─── Panel expansion (workshops) ─── */
+.taller-panel {
+  transition: flex 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ─── Magnetic button ─── */
+.magnetic {
+  display: inline-block;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* ─── Text clip gradient ─── */
+.text-gradient-amber {
+  background: linear-gradient(135deg, var(--bastardo-amber-light), var(--bastardo-amber));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Divider ─── */
+.divider-amber {
+  width: 48px;
+  height: 1px;
+  background: var(--bastardo-amber);
+}
+
+/* ─── Card hover glow ─── */
+.card-glow {
+  transition: box-shadow 0.4s ease;
+}
+.card-glow:hover {
+  box-shadow: 0 0 60px rgba(200, 129, 26, 0.15), 0 0 0 1px rgba(200, 129, 26, 0.2);
+}
+
+/* ─── Image overlay ─── */
+.img-cinematic {
+  filter: contrast(1.05) saturate(0.9);
+}
+
+/* ─── Dot pattern ─── */
+.dot-pattern {
+  background-image: radial-gradient(rgba(200, 129, 26, 0.2) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* ─── Scroll indicator ─── */
+@keyframes scroll-bounce {
+  0%, 100% { transform: translateY(0); opacity: 1; }
+  50%       { transform: translateY(8px); opacity: 0.5; }
+}
+
+.scroll-indicator {
+  animation: scroll-bounce 2s ease-in-out infinite;
+}
+
+/* ─── Taller hero parallax container ─── */
+.parallax-hero {
+  will-change: transform;
+}
+
+/* ─── Backdrop blur nav ─── */
+.nav-blur {
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+}
+
+/* ─── Modal overlay ─── */
+.modal-overlay {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* ─── Number reveal ─── */
+.number-reveal {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── Stagger fade in ─── */
+@keyframes stagger-in {
+  0%   { opacity: 0; transform: translateY(24px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.stagger-child {
+  animation: stagger-in 0.6s ease-out both;
+}
+
+/* ─── Underline hover ─── */
+.hover-underline {
+  position: relative;
+}
+.hover-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--bastardo-amber);
+  transition: width 0.3s ease;
+}
+.hover-underline:hover::after {
+  width: 100%;
+}
+
+/* ─── Floating CTA ─── */
+.floating-cta {
+  box-shadow: 0 4px 30px rgba(200, 129, 26, 0.5);
+}
